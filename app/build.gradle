@@ -26,4 +26,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     testCompile 'junit:junit:4.12'
+
+    compile 'com.akexorcist:RoundCornerProgressBar:2.0.3'
 }

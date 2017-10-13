@@ -11,8 +11,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.akexorcist.roundcornerprogressbar.common.BaseRoundCornerProgressBar;
 
 import java.util.Locale;
 
@@ -20,7 +21,7 @@ public class StatusFragment extends Fragment {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    ProgressBar mBatteryProgressBar;
+    BaseRoundCornerProgressBar mBatteryProgressBar;
     TextView mBatteryLevelValue;
     TextView mBatteryHealthValue;
     TextView mBatteryPluggedValue;
