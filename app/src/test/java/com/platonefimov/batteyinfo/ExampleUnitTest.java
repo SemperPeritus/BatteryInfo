@@ -1,4 +1,4 @@
-package com.platonefimov.batteryinfo;
+package com.platonefimov.batteyinfo;
 
 import org.junit.Test;
 
