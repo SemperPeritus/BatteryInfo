@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.akexorcist.roundcornerprogressbar.common.BaseRoundCornerProgressBar;
+import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
 
 import java.util.Locale;
 
@@ -21,24 +21,37 @@ public class StatusFragment extends Fragment {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    BaseRoundCornerProgressBar mBatteryProgressBar;
-    TextView mBatteryLevelValue;
-    TextView mBatteryHealthValue;
-    TextView mBatteryPluggedValue;
-    TextView mBatteryStatusValue;
-    TextView mBatteryTemperatureValue;
-    TextView mBatteryVoltageValue;
-    TextView mBatteryTechnologyValue;
+    private IconRoundCornerProgressBar mBatteryProgressBar;
+
+    private TextView mBatteryLevelValue;
+    private TextView mBatteryHealthValue;
+    private TextView mBatteryPluggedValue;
+    private TextView mBatteryStatusValue;
+    private TextView mBatteryTemperatureValue;
+    private TextView mBatteryVoltageValue;
+    private TextView mBatteryTechnologyValue;
 
     private BroadcastReceiver statusReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (!intent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, false)) {
+                mBatteryProgressBar.setIconImageResource(R.drawable.ic_battery_unknown_black);
+                return;
+            }
+
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
             int batteryPct = (int) ((level / (float) scale) * 100);
 
-            mBatteryProgressBar.setProgress(batteryPct);
+            mBatteryProgressBar.setMax(scale);
+            mBatteryProgressBar.setProgress(level);
+            mBatteryProgressBar.invalidate();
+
             mBatteryLevelValue.setText(String.format(Locale.ENGLISH, "%d%%", batteryPct));
+
+            boolean isUnknown = false;
+            boolean isNormal = false;
+            boolean isPlugged = true;
 
             int health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1);
             switch (health) {
@@ -50,6 +63,7 @@ public class StatusFragment extends Fragment {
                     break;
                 case (BatteryManager.BATTERY_HEALTH_GOOD):
                     mBatteryHealthValue.setText("Good");
+                    isNormal = true;
                     break;
                 case (BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE):
                     mBatteryHealthValue.setText("Over voltage");
@@ -58,10 +72,12 @@ public class StatusFragment extends Fragment {
                     mBatteryHealthValue.setText("Overheat");
                     break;
                 case (BatteryManager.BATTERY_HEALTH_UNKNOWN):
-                    mBatteryHealthValue.setText("Unkown");
+                    mBatteryHealthValue.setText("Unknown");
+                    isUnknown = true;
                     break;
                 case (BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE):
                     mBatteryHealthValue.setText("Failure");
+                    isUnknown = true;
                     break;
             }
 
@@ -81,6 +97,7 @@ public class StatusFragment extends Fragment {
                     break;
                 case (BatteryManager.BATTERY_STATUS_UNKNOWN):
                     mBatteryStatusValue.setText("Unknown");
+                    isUnknown = true;
                     break;
             }
 
@@ -97,6 +114,7 @@ public class StatusFragment extends Fragment {
                     break;
                 default:
                     mBatteryPluggedValue.setText("Unplugged");
+                    isPlugged = false;
                     break;
             }
 
@@ -110,6 +128,20 @@ public class StatusFragment extends Fragment {
 
             String technology = intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY);
             mBatteryTechnologyValue.setText(technology);
+
+            if (isUnknown)
+                mBatteryProgressBar.setIconImageResource(R.drawable.ic_battery_unknown_black);
+            else if (isNormal) {
+                if (isPlugged)
+                    mBatteryProgressBar.setIconImageResource(R.drawable.ic_battery_charging_full_black);
+                else {
+                    if (batteryPct <= 15)
+                        mBatteryProgressBar.setIconImageResource(R.drawable.ic_battery_alert_black);
+                    else
+                        mBatteryProgressBar.setIconImageResource(R.drawable.ic_battery_full_black);
+                }
+            } else
+                mBatteryProgressBar.setIconImageResource(R.drawable.ic_battery_alert_black);
         }
     };
 

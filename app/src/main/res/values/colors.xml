@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">@android:color/holo_orange_dark</color>
-    <color name="colorPrimaryDark">@android:color/holo_orange_dark</color>
+    <color name="colorPrimaryDark">#ff6600</color>
     <color name="colorAccent">@android:color/tertiary_text_light</color>
     <color name="colorProgressBackground">#FFFFCC88</color>
 </resources>

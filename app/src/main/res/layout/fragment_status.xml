@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+    <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
         android:id="@+id/battery_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -16,6 +16,10 @@
         android:layout_marginTop="15dp"
         app:rcBackgroundColor="@color/colorProgressBackground"
         app:rcBackgroundPadding="5dp"
+        app:rcIconBackgroundColor="@color/colorAccent"
+        app:rcIconSize="30dp"
+        app:rcIconSrc="@drawable/ic_battery_full_black"
+        app:rcMax="1.0"
         app:rcProgressColor="@color/colorPrimary"
         app:rcRadius="15dp" />
 
