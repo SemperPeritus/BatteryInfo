@@ -15,8 +15,6 @@ public class MainActivity extends FragmentActivity {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private AdView mAdViewBottom;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
